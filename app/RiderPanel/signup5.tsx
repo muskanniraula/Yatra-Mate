@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import {
   SafeAreaView,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
   StyleSheet,
   Image,
-  ScrollView, // Add ScrollView
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker"; // For image upload
-import { router } from "expo-router"; // For navigation
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { Button, TextField } from "../../components";
 
 export default function StudentVerificationPage() {
-  const [studentIdImage, setStudentIdImage] = useState<string | null>(null); // State for student ID image
+  const [studentIdImage, setStudentIdImage] = useState<string | null>(null);
+  const [institutionName, setInstitutionName] = useState("");
+  const [graduationYear, setGraduationYear] = useState("");
 
   // Function to handle image upload
   const pickImage = async () => {
@@ -26,12 +28,12 @@ export default function StudentVerificationPage() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3], // Adjust aspect ratio as needed
+      aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setStudentIdImage(result.assets[0].uri); // Set the selected image URI
+      setStudentIdImage(result.assets[0].uri);
     }
   };
 
@@ -41,34 +43,44 @@ export default function StudentVerificationPage() {
         {/* Header */}
         <Text style={styles.header}>Tourism Student Verification</Text>
         <Text style={styles.subHeader}>Verify your student status</Text>
+        
+        {/* Progress bar */}
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBar} />
+        </View>
 
         {/* Institution Name */}
-        <TextInput
-          style={styles.input}
+        <Text style={styles.sectionHeader}>Institution Name</Text>
+        <TextField
           placeholder="Enter your Institution Name"
-          placeholderTextColor="#999"
+          value={institutionName}
+          onChangeText={setInstitutionName}
         />
 
         {/* Upload Student ID */}
-        <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+        <Text style={styles.sectionHeader}>Upload Student ID</Text>
+        <TouchableOpacity style={styles.uploadContainer} onPress={pickImage}>
           {studentIdImage ? (
             <Image source={{ uri: studentIdImage }} style={styles.studentIdImage} />
           ) : (
-            <Text style={styles.uploadButtonText}>Upload Image</Text>
+            <Text style={styles.uploadText}>Upload Image</Text>
           )}
         </TouchableOpacity>
 
         {/* Graduation Year */}
-        <TextInput
-          style={styles.input}
+        <Text style={styles.sectionHeader}>Graduation Year</Text>
+        <TextField
           placeholder="Pick Graduation Year"
-          placeholderTextColor="#999"
+          value={graduationYear}
+          onChangeText={setGraduationYear}
         />
 
         {/* Save Button */}
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+        <Button
+          title="Save"
+          onPress={() => router.push("/RiderPanel/RiderDashboard")}
+          className="mt-5"
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,58 +92,55 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   scrollContainer: {
-    flexGrow: 1, // Ensures the content can scroll
+    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 20, // Add padding at the bottom
+    paddingTop: 32,
+    paddingBottom: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#102554",
-    marginBottom: 10,
+    color: "#000000",
+    marginBottom: 5,
   },
   subHeader: {
-    fontSize: 14,
-    color: "#556080",
-    marginBottom: 40,
-  },
-  input: {
-    height: 50,
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    marginBottom: 20,
     fontSize: 16,
+    color: "#777777",
+    marginBottom: 15,
   },
-  uploadButton: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-    padding: 15,
+  progressBarContainer: {
+    height: 4,
+    backgroundColor: "#f0f0f0",
+    marginBottom: 25,
+    width: '100%',
+  },
+  progressBar: {
+    height: '100%',
+    width: '100%', // More progress than previous screens
+    backgroundColor: "#102554",
+  },
+  sectionHeader: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 10,
+  },
+  uploadContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 16,
+    padding: 12,
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    justifyContent: "center",
-    height: 150, // Adjust height as needed
+    height: 50,
   },
-  uploadButtonText: {
-    color: "#102554",
+  uploadText: {
+    color: "#000",
     fontSize: 16,
   },
   studentIdImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 5,
-  },
-  saveButton: {
-    backgroundColor: "#102554",
-    borderRadius: 5,
-    padding: 15,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
+    borderRadius: 25,
   },
 });

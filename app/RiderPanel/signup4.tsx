@@ -2,20 +2,23 @@ import React, { useState } from "react";
 import {
   SafeAreaView,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
   StyleSheet,
   Image,
-  ScrollView, // Add ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker"; // For image upload
-import { router } from "expo-router"; // For navigation
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { Button, TextField } from "../../components";
 
 export default function LicenseVerificationPage() {
-  const [licenseImage, setLicenseImage] = useState<string | null>(null); // State for license image
+  const [licenseImage, setLicenseImage] = useState<string | null>(null);
+  const [licenseNumber, setLicenseNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
 
-  // Function to handle image upload
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -26,53 +29,67 @@ export default function LicenseVerificationPage() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3], // Adjust aspect ratio as needed
+      aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setLicenseImage(result.assets[0].uri); // Set the selected image URI
+      setLicenseImage(result.assets[0].uri);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Header */}
-        <Text style={styles.header}>License Verification</Text>
-        <Text style={styles.subHeader}>Verify your driver's license</Text>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* Header */}
+          <Text style={styles.header}>License Verification</Text>
+          <Text style={styles.subHeader}>Verify your driver's license</Text>
+          
+          {/* Progress bar */}
+          <View style={styles.progressBarContainer}>
+            <View style={styles.progressBar} />
+          </View>
 
-        {/* Driver's License Number */}
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your Driver's License Number"
-          placeholderTextColor="#999"
-        />
+          <View style={styles.formContainer}>
+            {/* License Number - Using the original TextField component */}
+            <Text style={styles.sectionHeader}>Driver's License Number</Text>
+            <TextField
+              placeholder="Enter your Driver's License Number"
+              value={licenseNumber}
+              onChangeText={setLicenseNumber}
+            />
 
-        {/* Upload License */}
-        <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
-          {licenseImage ? (
-            <Image source={{ uri: licenseImage }} style={styles.licenseImage} />
-          ) : (
-            <Text style={styles.uploadButtonText}>Upload Image</Text>
-          )}
-        </TouchableOpacity>
+            {/* License Image Upload */}
+            <Text style={styles.sectionHeader}>Upload License Image</Text>
+            <TouchableOpacity style={styles.uploadContainer} onPress={pickImage}>
+              {licenseImage ? (
+                <Image source={{ uri: licenseImage }} style={styles.licenseImage} />
+              ) : (
+                <Text style={styles.uploadText}>Tap to upload image</Text>
+              )}
+            </TouchableOpacity>
 
-        {/* Expiry Date */}
-        <TextInput
-          style={styles.input}
-          placeholder="Pick Expiry Date"
-          placeholderTextColor="#999"
-        />
+            {/* Expiry Date - Using the original TextField component */}
+            <Text style={styles.sectionHeader}>Expiry Date</Text>
+            <TextField
+              placeholder="Pick Expiry Date"
+              value={expiryDate}
+              onChangeText={setExpiryDate}
+            />
 
-        {/* Save Button */}
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => router.push("/RiderPanel/signup5")} // Navigate to Tourism Student Verification
-        >
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
-      </ScrollView>
+            {/* Save Button - Using the original Button component */}
+            <Button
+              title="Save"
+              onPress={() => router.push("/RiderPanel/signup5")}
+              className="mt-5"
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -83,58 +100,58 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   scrollContainer: {
-    flexGrow: 1, // Ensures the content can scroll
+    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 20, // Add padding at the bottom
+    paddingTop: 32,
+    paddingBottom: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#102554",
-    marginBottom: 10,
+    color: "#000000",
+    marginBottom: 5,
   },
   subHeader: {
-    fontSize: 14,
-    color: "#556080",
-    marginBottom: 40,
-  },
-  input: {
-    height: 50,
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    marginBottom: 20,
     fontSize: 16,
+    color: "#777777",
+    marginBottom: 15,
   },
-  uploadButton: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-    padding: 15,
+  progressBarContainer: {
+    height: 4,
+    backgroundColor: "#f0f0f0",
+    marginBottom: 25,
+    width: '100%',
+  },
+  progressBar: {
+    height: '100%',
+    width: '80%',
+    backgroundColor: "#102554",
+  },
+  formContainer: {
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 10,
+  },
+  uploadContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 16,
+    padding: 12,
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    justifyContent: "center",
-    height: 150, // Adjust height as needed
+    height: 50,
   },
-  uploadButtonText: {
-    color: "#102554",
+  uploadText: {
+    color: "#000",
     fontSize: 16,
   },
   licenseImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 5,
-  },
-  saveButton: {
-    backgroundColor: "#102554",
-    borderRadius: 5,
-    padding: 15,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
+    borderRadius: 25,
   },
 });
