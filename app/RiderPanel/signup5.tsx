@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    width: '100%', // More progress than previous screens
+    width: '100%',
     backgroundColor: "#102554",
   },
   sectionHeader: {
