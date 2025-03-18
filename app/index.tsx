@@ -8,13 +8,13 @@ export default function WelcomeScreen() {
       <View style={styles.contentContainer}>
         {/* Logo and App Name */}
         <View style={styles.logoContainer}>
-          <Image
+          {/* <Image
             source={require("../assets/images/logo1.png")}
             style={styles.logo}
             resizeMode="contain"
-          />
+          /> */}
           <Text style={styles.appNameText}>YATRA MATE</Text>
-          <Text style={styles.taglineText}>Your Local Travel Buddy!</Text>
+          <Text style={styles.taglineText}>Travel Smarter, Explore Better!</Text>
         </View>
 
         {/* Buttons */}
@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.button}
+            style={styles.buttonoutline}
             onPress={() => router.push("/RiderPanel/signup1")}
           >
             <Text style={styles.buttonText}>Continue as a Rider</Text>
@@ -41,7 +41,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0a2145", // Dark navy blue background
+    backgroundColor: "#02152B", // Dark navy blue background
   },
   contentContainer: {
     flex: 1,
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 30,
     paddingVertical: 60,
+    
   },
   logoContainer: {
     flex: 1,
@@ -56,15 +57,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 20,
+    width: 150,
+    height: 150,
+    marginBottom: 8,
   },
   appNameText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 5,
+    fontSize: 48,
+    fontWeight: 700,
+    color: "#E5F1FF",
+    marginBottom: 8,
   },
   taglineText: {
     fontSize: 16,
@@ -73,16 +74,24 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: "100%",
-    marginBottom: 20,
+
   },
   button: {
-    backgroundColor: "#1e3c67", // Slightly lighter blue
-    borderRadius: 8,
-    padding: 16,
+    backgroundColor: "#1C3D62", // Slightly lighter blue
+    borderRadius: 16,
+    padding: 20,
     alignItems: "center",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#2d4d7c",
+    borderColor: "#1C3D62",
+  },
+  buttonoutline: {
+    borderColor: "#1C3D62", // Slightly lighter blue
+    borderRadius: 16,
+    padding: 20,
+    alignItems: "center",
+    marginBottom: 16,
+    borderWidth: 1.5,
   },
   buttonText: {
     color: "white",
