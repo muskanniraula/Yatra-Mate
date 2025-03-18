@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, Text, TouchableOpacity, Image, View, StyleSheet } from "react-native";
 import { router } from "expo-router"; // Import router from expo-router
+import { Button, TextField } from "../components";
 
 export default function WelcomeScreen() {
   return (
@@ -19,12 +20,11 @@ export default function WelcomeScreen() {
 
         {/* Buttons */}
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={() => {}}
-          >
-            <Text style={styles.buttonText}>Continue as a User</Text>
-          </TouchableOpacity>
+        <Button
+          title="Continue as a User"
+          onPress={() => router.push("/UserPanel/PersonalInfo")}
+          className="mt-5"
+        />
           
           <TouchableOpacity 
             style={styles.buttonoutline}
