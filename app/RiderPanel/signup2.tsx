@@ -106,11 +106,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#000000",
+    marginBottom: 5,
   },
   subHeader: {
     fontSize: 16,
     color: "#777777",
-    marginTop: 5,
+    marginBottom: 15,
   },
   progressBarContainer: {
     height: 3,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 3,
-    width: "50%", // Represents second step
+    width: "40%", // Represents second step
     backgroundColor: "#0a2145",
   },
   imageContainer: {

@@ -2,21 +2,23 @@ import React, { useState } from "react";
 import {
   SafeAreaView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   StyleSheet,
   Image,
-  ScrollView, // Add ScrollView
+  ScrollView,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker"; // For image upload
-import { router } from "expo-router"; // For navigation
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { TextField, Button } from "../../components"; // Importing reusable components
 
 export default function RiderProfilePage() {
-  const [profileImage, setProfileImage] = useState<string | null>(null); // State for profile image
-  const [gender, setGender] = useState<"Male" | "Female" | null>(null); // State for gender selection
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [gender, setGender] = useState<"Male" | "Female" | null>("Male"); // Default to Male as shown in image
+  const [model, setModel] = useState("");
+  const [color, setColor] = useState("");
+  const [licensePlate, setLicensePlate] = useState("");
 
-  // Function to handle image upload
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -32,11 +34,10 @@ export default function RiderProfilePage() {
     });
 
     if (!result.canceled) {
-      setProfileImage(result.assets[0].uri); // Set the selected image URI
+      setProfileImage(result.assets[0].uri);
     }
   };
 
-  // Function to handle gender selection
   const handleGenderSelect = (selectedGender: "Male" | "Female") => {
     setGender(selectedGender);
   };
@@ -46,7 +47,12 @@ export default function RiderProfilePage() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header */}
         <Text style={styles.header}>Rider Profile Setup</Text>
-        <Text style={styles.subHeader}>Complete your profile to get started</Text>
+        <Text style={styles.subHeader}>sub-heading</Text>
+        
+        {/* Progress bar */}
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBar} />
+        </View>
 
         {/* Profile Picture */}
         <Text style={styles.sectionHeader}>Profile Picture</Text>
@@ -58,68 +64,68 @@ export default function RiderProfilePage() {
           )}
         </TouchableOpacity>
 
-        {/* Gender Selection */}
+        {/* Gender Selection with Radio Buttons */}
         <Text style={styles.sectionHeader}>Gender</Text>
         <View style={styles.genderContainer}>
-          <TouchableOpacity
-            style={[
-              styles.genderButton,
-              gender === "Male" && styles.selectedGenderButton,
-            ]}
+          <TouchableOpacity 
+            style={styles.radioOption}
             onPress={() => handleGenderSelect("Male")}
           >
-            <Text
-              style={[
-                styles.genderButtonText,
-                gender === "Male" && styles.selectedGenderText,
-              ]}
-            >
-              Male
-            </Text>
+            <View style={styles.radioButtonContainer}>
+              <View style={[
+                styles.radioButtonOuter, 
+                gender === "Male" && styles.radioButtonOuterSelected
+              ]}>
+                {gender === "Male" && <View style={styles.radioButtonInner} />}
+              </View>
+              <Text style={styles.radioButtonText}>Male</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.genderButton,
-              gender === "Female" && styles.selectedGenderButton,
-            ]}
+          
+          <TouchableOpacity 
+            style={styles.radioOption}
             onPress={() => handleGenderSelect("Female")}
           >
-            <Text
-              style={[
-                styles.genderButtonText,
-                gender === "Female" && styles.selectedGenderText,
-              ]}
-            >
-              Female
-            </Text>
+            <View style={styles.radioButtonContainer}>
+              <View style={[
+                styles.radioButtonOuter, 
+                gender === "Female" && styles.radioButtonOuterSelected
+              ]}>
+                {gender === "Female" && <View style={styles.radioButtonInner} />}
+              </View>
+              <Text style={styles.radioButtonText}>Female</Text>
+            </View>
           </TouchableOpacity>
         </View>
 
         {/* Vehicle Details */}
-        <Text style={styles.sectionHeader}>Vehicle Details</Text>
-        <TextInput
-          style={styles.input}
+        <TextField
+          label="Model"
           placeholder="Enter your vehicle model"
-          placeholderTextColor="#999"
+          value={model}
+          onChangeText={setModel}
         />
-        <TextInput
-          style={styles.input}
+
+        <TextField
+          label="Color"
           placeholder="Enter your vehicle color"
-          placeholderTextColor="#999"
+          value={color}
+          onChangeText={setColor}
         />
-        <TextInput
-          style={styles.input}
+
+        <TextField
+          label="License Plate"
           placeholder="Enter your License Plate"
-          placeholderTextColor="#999"
+          value={licensePlate}
+          onChangeText={setLicensePlate}
         />
 
         {/* Save Button */}
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => router.push("/RiderPanel/signup4")} // Navigate to License Verification
-        >
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+        <Button
+          title="Save"
+          onPress={() => router.push("/RiderPanel/signup4")}
+          className="mt-5"
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -131,86 +137,89 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   scrollContainer: {
-    flexGrow: 1, // Ensures the content can scroll
+    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 20, // Add padding at the bottom
+    paddingTop: 32,
+    paddingBottom: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#102554",
-    marginBottom: 10,
+    color: "#000000",
+    marginBottom: 5,
   },
   subHeader: {
-    fontSize: 14,
-    color: "#556080",
-    marginBottom: 40,
+    fontSize: 16,
+    color: "#777777",
+    marginBottom: 15,
+  },
+  progressBarContainer: {
+    height: 4,
+    backgroundColor: "#f0f0f0",
+    marginBottom: 25,
+    width: '100%',
+  },
+  progressBar: {
+    height: '100%',
+    width: '60%', // Adjust based on progress
+    backgroundColor: "#102554",
   },
   sectionHeader: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#102554",
+    color: "#666",
     marginBottom: 10,
   },
   uploadButton: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-    padding: 15,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 25,
+    padding: 12,
     alignItems: "center",
     marginBottom: 20,
     justifyContent: "center",
-    height: 150,
+    height: 50,
   },
   uploadButtonText: {
-    color: "#102554",
+    color: "#000",
     fontSize: 16,
   },
   profileImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 5,
+    borderRadius: 25,
   },
   genderContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     marginBottom: 20,
   },
-  genderButton: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-    padding: 15,
-    width: "48%",
+  radioOption: {
+    marginRight: 30,
+  },
+  radioButtonContainer: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  selectedGenderButton: {
-    backgroundColor: "#102554",
-  },
-  genderButtonText: {
-    color: "#102554",
-    fontSize: 16,
-  },
-  selectedGenderText: {
-    color: "white",
-  },
-  input: {
-    height: 50,
-    borderColor: "#e0e0e0",
+  radioButtonOuter: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    marginBottom: 20,
-    fontSize: 16,
-  },
-  saveButton: {
-    backgroundColor: "#102554",
-    borderRadius: 5,
-    padding: 15,
+    borderColor: "#999",
     alignItems: "center",
+    justifyContent: "center",
   },
-  saveButtonText: {
-    color: "white",
+  radioButtonOuterSelected: {
+    borderColor: "#102554",
+  },
+  radioButtonInner: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: "#102554",
+  },
+  radioButtonText: {
+    paddingLeft: 10,
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#000",
   },
 });

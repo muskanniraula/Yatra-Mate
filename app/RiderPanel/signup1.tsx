@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 3,
-    width: "25%", // Represents first step of a multi-step form
+    width: "20%", // Represents first step of a multi-step form
     backgroundColor: "#0a2145",
   },
   formContainer: {
