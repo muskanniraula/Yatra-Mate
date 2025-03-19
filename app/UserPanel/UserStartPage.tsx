@@ -1,9 +1,9 @@
 import React from "react";
 import { SafeAreaView, Text, TouchableOpacity, Image, View, StyleSheet } from "react-native";
 import { router } from "expo-router"; // Import router from expo-router
-import { Button, TextField } from "../components";
+import { Button } from "../../components"; // Adjusted import path - check this is correct
 
-export default function WelcomeScreen() {
+export default function UserrStartPage() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -14,23 +14,23 @@ export default function WelcomeScreen() {
             style={styles.logo}
             resizeMode="contain"
           /> */}
-          <Text style={styles.appNameText}>YATRA MATE</Text>
+          <Text style={styles.appNameText}>User Portal</Text>
           <Text style={styles.taglineText}>Travel Smarter, Explore Better!</Text>
         </View>
 
         {/* Buttons */}
         <View style={styles.buttonsContainer}>
-        <Button
-          title="Continue as a User"
-          onPress={() => router.push("/UserPanel/UserStartPage")}
-          className="mt-5"
-        />
+          <Button
+            title="Login"
+            onPress={() => router.push("/UserPanel/UserLogin")}
+            className="mt-5"
+          />
           
           <TouchableOpacity 
             style={styles.buttonoutline}
-            onPress={() => router.push("/RiderPanel/RiderStartPage")}
+            onPress={() => router.push("/UserPanel/PersonalInfo")}
           >
-            <Text style={styles.buttonText}>Continue as a Rider</Text>
+            <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 30,
     paddingVertical: 60,
-    
   },
   logoContainer: {
     flex: 1,
@@ -63,8 +62,8 @@ const styles = StyleSheet.create({
   },
   appNameText: {
     fontSize: 48,
-    fontWeight: 700,
-    color: "#E5F1FF",
+    fontWeight: "700", // Use string for fontWeight
+    color: "#E5F1FF", 
     marginBottom: 8,
   },
   taglineText: {
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: "100%",
-
   },
   button: {
     backgroundColor: "#1C3D62", // Slightly lighter blue
@@ -90,7 +88,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     alignItems: "center",
-    marginBottom: 16,
     borderWidth: 1.5,
   },
   buttonText: {
